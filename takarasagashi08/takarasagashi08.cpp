@@ -1,14 +1,14 @@
 ﻿#include <stdio.h> // 標準入出力ライブラリのインクルード
 
 // プロトタイプ宣言
-void initialize(int* tre_x, int* tre_y, int* get_comp, int* score, int* tries);
-void input_and_validate(int* col, int* row, int* valid);
-void print_board(int input_col, int input_row);
-void check_all_treasure(int* tre_x, int* tre_y, int* get_comp, int input_col, int input_row, int* found);
-void add_score(int* score, int found);
-void show_board_or_error(int valid, int input_col, int input_row);
-void show_result_message(int found);
-void show_score(int score);
+void initialize(int* tre_x, int* tre_y, int* get_comp, int* score, int* tries); // 配列・変数初期化
+void input_and_validate(int* col, int* row, int* valid); // 入力と妥当性判定
+void print_board(int input_col, int input_row); // 盤面表示
+void check_all_treasure(int* tre_x, int* tre_y, int* get_comp, int input_col, int input_row, int* found); // 宝物一致判定
+void add_score(int* score, int found); // スコア加算
+void show_board_or_error(int valid, int input_col, int input_row); // 盤面またはエラー表示
+void show_result_message(int found); // 結果表示
+void show_score(int score); // スコア表示
 
 #define TRE_COUNT 10    // 宝物の数
 #define MAX_TRIES 20    // 最大試行回数
@@ -16,24 +16,24 @@ void show_score(int score);
 
 // 関数7: 配列初期化・値設定
 void initialize(int* tre_x, int* tre_y, int* get_comp, int* score, int* tries) {
-    int tx[TRE_COUNT] = {5, 3, 0, 5, 1, 2, 4, 0, 3, 2};
-    int ty[TRE_COUNT] = {8, 9, 5, 9, 7, 8, 6, 1, 7, 5};
-    for (int i = 0; i < TRE_COUNT; i++) {
-        tre_x[i] = tx[i];
-        tre_y[i] = ty[i];
-        get_comp[i] = 0;
+    int tx[TRE_COUNT] = {5, 3, 0, 5, 1, 2, 4, 0, 3, 2}; // 宝物のx座標
+    int ty[TRE_COUNT] = {8, 9, 5, 9, 7, 8, 6, 1, 7, 5}; // 宝物のy座標
+    for (int i = 0; i < TRE_COUNT; i++) { // 各宝物について
+        tre_x[i] = tx[i]; // x座標を設定
+        tre_y[i] = ty[i]; // y座標を設定
+        get_comp[i] = 0;  // 取得済みフラグを0で初期化
     }
-    *score = 0;
-    *tries = 0;
+    *score = 0; // スコア初期化
+    *tries = 0; // 試行回数初期化
 }
 
 // 関数8: 入力・妥当性判定
 void input_and_validate(int* col, int* row, int* valid) {
-    printf("列 = ");
-    scanf_s("%d", col);
-    printf("行 = ");
-    scanf_s("%d", row);
-    *valid = (*col >= 0 && *col < GRID_SIZE && *row >= 0 && *row < GRID_SIZE);
+    printf("列 = "); // 列入力を促す
+    scanf_s("%d", col); // 列番号の入力
+    printf("行 = "); // 行入力を促す
+    scanf_s("%d", row); // 行番号の入力
+    *valid = (*col >= 0 && *col < GRID_SIZE && *row >= 0 && *row < GRID_SIZE); // 入力値の妥当性判定
 }
 
 // 盤面を表示する関数
@@ -59,20 +59,20 @@ void print_board(int input_col, int input_row) {
 
 // 関数9: 全宝物との一致判定（ポインタ渡し）
 void check_all_treasure(int* tre_x, int* tre_y, int* get_comp, int input_col, int input_row, int* found) {
-    *found = 0;
-    for (int i = 0; i < TRE_COUNT; i++) {
-        if (!get_comp[i] && input_col == tre_x[i] && input_row == tre_y[i]) {
-            *found = 1;
-            get_comp[i] = 1;
-            break;
+    *found = 0; // 初期値は未発見
+    for (int i = 0; i < TRE_COUNT; i++) { // 全宝物を調べる
+        if (!get_comp[i] && input_col == tre_x[i] && input_row == tre_y[i]) { // 未取得かつ座標一致
+            *found = 1; // 発見フラグを立てる
+            get_comp[i] = 1; // 取得済みにする
+            break; // 1つ見つけたら終了
         }
     }
 }
 
 // 関数10: スコア加算（return命令は使わない）
 void add_score(int* score, int found) {
-    if (found) {
-        (*score)++;
+    if (found) { // 宝物を発見した場合
+        (*score)++; // スコアを加算
     }
 }
 
@@ -98,11 +98,11 @@ void show_result_message(int found) {
 
 // スコア表示
 void show_score(int score) {
-    printf("スコア: %d\n", score);
+    printf("スコア: %d\n", score); // スコアを表示
 }
 
 int main() {
-    int tre_x[TRE_COUNT], tre_y[TRE_COUNT], get_comp[TRE_COUNT];
+    int tre_x[TRE_COUNT], tre_y[TRE_COUNT], get_comp[TRE_COUNT]; // 宝物の座標・取得フラグ配列
     int input_col, input_row; // プレイヤーが入力する列・行
     int tries, score; // 試行回数カウンタとスコア（発見した宝物の数）
     int valid, found; // 妥当性判定フラグと宝物発見フラグ
@@ -122,7 +122,7 @@ int main() {
             // スコア加算
             add_score(&score, found);
         } else {
-            found = 0;
+            found = 0; // 妥当でない場合は発見フラグを0
         }
 
         // 盤面またはエラー表示
