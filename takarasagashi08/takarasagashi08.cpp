@@ -91,10 +91,10 @@ void show_board_or_error(int input_error, int input_x, int input_y) {
 // 関数4: 一致判定結果に応じて「はずれ」「あたり」表示
 void show_result_message(int get_treasure) {
     if (get_treasure) { // 宝物を発見した場合
-        printf("あたり！\n"); // 当たりメッセージ
+        printf("あたり\n"); // 当たりメッセージ
     }
     else {
-        printf("はずれ。\n"); // 外れメッセージ
+        printf("はずれ\n"); // 外れメッセージ
     }
 }
 
